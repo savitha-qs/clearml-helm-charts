@@ -20,8 +20,8 @@ jobs:
   install-chart:
     name: install-chart
     runs-on: ubuntu-latest
-    needs:
-      - lint-docs
+#    needs:
+#      - lint-docs
     strategy:
       matrix:
         k8s:
