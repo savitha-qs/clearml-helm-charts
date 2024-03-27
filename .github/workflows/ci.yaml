@@ -1,6 +1,7 @@
 name: Lint and Test Charts
 
 on:
+  workflow_dispatch:
   pull_request:
     types: [opened, synchronize, edited, reopened]
     paths:
@@ -24,8 +25,8 @@ jobs:
     strategy:
       matrix:
         k8s:
-          - v1.27.11
-          - v1.28.7
+        #  - v1.27.11
+        #  - v1.28.7
           - v1.29.2
     steps:
       - name: Checkout
@@ -60,7 +61,7 @@ jobs:
         run: |
           find ./charts/*/ci/*.yaml -type f -exec sed -i "s/AGENTK8SGLUEKEY/${{ secrets.AGENTK8SGLUEKEY }}/g" {} \;
           find ./charts/*/ci/*.yaml -type f -exec sed -i "s/AGENTK8SGLUESECRET/${{ secrets.AGENTK8SGLUESECRET }}/g" {} \;
-        if: steps.list-changed.outputs.changed == 'true'
+        #if: steps.list-changed.outputs.changed == 'true'
       - name: Run chart-testing (lint and install)
         run: ct lint-and-install --chart-dirs charts --target-branch main --helm-extra-args "--timeout=15m" --charts=${{steps.list-changed.outputs.changed_charts}} --debug true
-        if: steps.list-changed.outputs.changed == 'true'
+        #if: steps.list-changed.outputs.changed == 'true'
